@@ -7,6 +7,10 @@ from django.views import defaults as default_views
 
 urlpatterns = [
     path(
+        'cheeses/',
+        include("everycheese.cheeses.urls", namespace="cheeses"),
+        ),
+    path(
         "",
         TemplateView.as_view(template_name="pages/home.html"),
         name="home",
@@ -54,3 +58,4 @@ if settings.DEBUG:
         urlpatterns = [
             path("__debug__/", include(debug_toolbar.urls))
         ] + urlpatterns
+
