@@ -18,6 +18,12 @@
   {% if cheese.country_of_origin %}
     <p> Country of Origin: {{ cheese.country_of_origin.name }} <img src="{{ cheese.country_of_origin.flag }}" /></p>
   {% endif %}
+
+  <h3> Käse wurde erstellt von: <a href="{% url "users:detail" cheese.creator.username %}">{{ cheese.creator.username }}</a></h3>
+  {% if cheese.creator.name %}
+    <p>{{ cheese.creator.name }}</p>
+  {% endif %}
+
 {% endblock content %}
 </body>
 </html>
