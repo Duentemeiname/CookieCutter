@@ -19,7 +19,7 @@ class CheeseCreateView(LoginRequiredMixin, CreateView):
         'country_of_origin',
     ]
 
-class CheeseCreateView2(CreateView):
+class CheeseCreateView2(CreateView, DetailView):
     model = Cheese
     fields = [
         'name',
