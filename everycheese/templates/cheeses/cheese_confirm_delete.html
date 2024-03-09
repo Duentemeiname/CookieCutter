@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Möchtest du "{{ cheese.name }}" wirklich löschen?</h2>
+
+  {% if cheese.name and cheese.description and cheese.firmness and cheese.country_of_origin %}
+    <br><p>Name des Käses: {{ cheese.name }} <br>
+    Beschreibung des Käses: {{ cheese.description }} <br>
+    Härte des Käses: {{ cheese.firmness }} <br>
+    Herkunft des Käses: {{ cheese.country_of_origin.name }}
+  </p><br>
+ {% endif %}
+
+  <form method="post" action=".">
+    {% csrf_token %}
+    <input type="submit" value="Löschen">
+    <a href="{% url 'cheeses:list' %}">Abbrechen</a>
+  </form>
+{% endblock %}
+</body>
+</html>

@@ -1,7 +1,7 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Cheese
-
+from django.urls import reverse
 
 class CheeseListView(ListView):
     model = Cheese
@@ -21,13 +21,7 @@ class CheeseCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
-class CheeseCreateView2(CreateView, DetailView):
-    model = Cheese
-    fields = [
-        'name',
-        'description',
-        'firmness',
-    ]
+
 class CheeseUpdateView(LoginRequiredMixin, UpdateView):
     model = Cheese
     fields = [
@@ -37,3 +31,6 @@ class CheeseUpdateView(LoginRequiredMixin, UpdateView):
         'country_of_origin'
     ]
     action = "Update"
+class CheeseDeleteView(LoginRequiredMixin, DeleteView):
+    model = Cheese
+    success_url = "/cheeses"

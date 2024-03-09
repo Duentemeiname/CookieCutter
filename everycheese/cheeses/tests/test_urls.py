@@ -33,3 +33,4 @@ def test_detail_resolve(cheese):
     """/cheeses/cheeseslug/ resolves to cheeses:detail."""
     url = f'/cheeses/{cheese.slug}/'
     assert resolve(url).view_name == 'cheeses:detail'
+

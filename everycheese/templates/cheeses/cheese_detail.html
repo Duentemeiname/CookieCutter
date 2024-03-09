@@ -30,7 +30,12 @@ href="{% url 'cheeses:update' cheese.slug%}" role="button">
 Update Cheese
 </a>
 </p>
-
+  <p>
+<a class="btn btn-primary"
+href="{% url 'cheeses:delete' cheese.slug%}" role="button">
+Delete Cheese
+</a>
+</p>
 {% endblock content %}
 </body>
 </html>
