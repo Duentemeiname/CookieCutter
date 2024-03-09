@@ -1,5 +1,5 @@
 import pytest
-from pytest_django.asserts import assertContains
+from pytest_django.asserts import assertContains, assertRedirects
 from .factories import UserFactory
 
 from django.urls import reverse
@@ -143,4 +143,13 @@ def test_cheese_update(client, user, cheese):
 
     cheese.refresh_from_db()
     assert cheese.description == "Something new"
+
+def test_cheese_delete(client, user):
+    cheese = CheeseFactory()
+    client.force_login(user)
+    response = client.post(reverse("cheeses:delete", kwargs={'slug': cheese.slug}))
+    assert response.status_code == 302
+    assert not Cheese.objects.filter(id=cheese.id).exists()
+    assertRedirects(response, '/cheeses', status_code=302, target_status_code=301)  #Müsste es nicht eigentlich bei cheeses 301 (Moved) und dann 200 OK sein?
+
 
