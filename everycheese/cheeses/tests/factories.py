@@ -1,4 +1,5 @@
 from django.template.defaultfilters import slugify
+from everycheese.users.tests.factories import UserFactory
 
 import factory
 import factory.fuzzy
@@ -10,6 +11,7 @@ class CheeseFactory(factory.django.DjangoModelFactory):
     slug = factory.LazyAttribute(
         lambda obj: slugify(obj.name))
     country_of_origin = factory.Faker('country_code')
+    creator = factory.SubFactory(UserFactory)
     description = factory.Faker(
         'paragraph', nb_sentences=3,
         variable_nb_sentences=True
