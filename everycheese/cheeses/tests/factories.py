@@ -6,6 +6,9 @@ import factory.fuzzy
 
 from ..models import Cheese
 
+def cheese():
+    return CheeseFactory()
+
 class CheeseFactory(factory.django.DjangoModelFactory):
     name = factory.fuzzy.FuzzyText()
     slug = factory.LazyAttribute(

@@ -2,14 +2,15 @@ import pytest
 from pytest_django.asserts import assertContains
 from .factories import UserFactory
 
-
 from django.urls import reverse
 
 from .factories import CheeseFactory
 from ..models import Cheese
 from ..views import (
     CheeseListView,
-    CheeseDetailView
+    CheeseDetailView,
+    CheeseCreateView,
+    CheeseUpdateView,
 )
 
 pytestmark = pytest.mark.django_db
@@ -17,6 +18,11 @@ pytestmark = pytest.mark.django_db
 @pytest.fixture
 def user():
     return UserFactory()
+
+@pytest.fixture
+def cheese():
+    return CheeseFactory()
+
 
 
 def test_good_cheese_list_view_expanded(rf):
@@ -94,6 +100,7 @@ def test_detail_contains_cheese_data(rf):
     assertContains(response, cheese.get_firmness_display())
     assertContains(response, cheese.country_of_origin.name)
 
+
 def test_cheese_create_form_valid(client, user):
     # Authenticate the user
     client.force_login(user)
@@ -113,3 +120,27 @@ def test_cheese_create_form_valid(client, user):
     assert cheese.description == "A salty hard cheese"
     assert cheese.firmness == Cheese.Firmness.HARD
     assert cheese.creator == user
+
+def test_create_correct_titel(client, user):
+    # Authenticate the user
+    client.force_login(user)
+    # Call the cheese add view
+    response = client.get(reverse("cheeses:add"))
+    # Confirm that 'Add Cheese' is in the rendered HTML
+    assertContains(response, "Add Cheese")
+
+def test_cheese_update(client, user, cheese):
+    # Authenticate the user
+    client.force_login(user)
+    form_data = {
+        "name": cheese.name,
+        "description": "Something new",
+        "firmness": cheese.firmness,
+    }
+    url = reverse("cheeses:update",
+        kwargs={"slug": cheese.slug})
+    response = client.post(url, form_data)
+
+    cheese.refresh_from_db()
+    assert cheese.description == "Something new"
+
